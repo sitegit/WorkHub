@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.example.workhub"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.workhub"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -39,6 +39,12 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:core-ui"))
+    implementation(project(":features:feature-main"))
+    implementation(project(":features:feature-favourite"))
+    implementation(project(":features:feature-feedback"))
+    implementation(project(":features:feature-messages"))
+    implementation(project(":features:feature-profile"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

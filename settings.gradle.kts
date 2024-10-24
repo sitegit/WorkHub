@@ -21,4 +21,9 @@ dependencyResolutionManagement {
 
 rootProject.name = "WorkHub"
 include(":app")
- 
+include(":core:core-ui")
+include(":features:feature-main")
+include(":features:feature-favourite")
+include(":features:feature-feedback")
+include(":features:feature-messages")
+include(":features:feature-profile")
