@@ -9,4 +9,6 @@
     <string name="label_feedback">Отклики</string>
     <string name="label_messages">Сообщения</string>
     <string name="label_profile">Профиль</string>
+
+    <string name="hint_search">Должность, ключевые слова</string>">
 </resources>

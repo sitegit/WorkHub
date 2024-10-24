@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/navigation_main"
-        android:name="com.example.feature_main.MainFragment"
+        android:name="com.example.feature_main.presenation.MainFragment"
         android:label="MainFragment" >
         <action
             android:id="@+id/action_navigation_main_to_relevantVacanciesFragment"
@@ -14,6 +14,6 @@
     </fragment>
     <fragment
         android:id="@+id/relevantVacanciesFragment"
-        android:name="com.example.feature_main.RelevantVacanciesFragment"
+        android:name="com.example.feature_main.presenation.RelevantVacanciesFragment"
         android:label="RelevantVacanciesFragment" />
 </navigation>
