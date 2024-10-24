@@ -16,7 +16,11 @@ class MainViewModel @Inject constructor(
     private val _state = MutableStateFlow<MainUiState>(MainUiState.Initial)
     val state = _state.asStateFlow()
 
-    fun getVacancies() {
+    init {
+        getVacancies()
+    }
+
+    private fun getVacancies() {
         viewModelScope.launch {
             _state.value = MainUiState.Loading
 
