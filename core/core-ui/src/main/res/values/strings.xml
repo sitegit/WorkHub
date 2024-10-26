@@ -11,4 +11,14 @@
     <string name="label_profile">Профиль</string>
 
     <string name="hint_search">Должность, ключевые слова</string>">
+    <string name="respond">Откликнуться</string>
+    <string name="vacancies_for_you">Вакансии для вас</string>
+    <string name="published">Опубликовано %1$s %2$s</string>
+
+    <plurals name="people_count">
+        <item quantity="one">Сейчас просматривает %d человек</item>
+        <item quantity="few">Сейчас просматривает %d человека</item>
+        <item quantity="many">Сейчас просматривает %d человек</item>
+        <item quantity="other">Сейчас просматривает %d человек</item>
+    </plurals>
 </resources>

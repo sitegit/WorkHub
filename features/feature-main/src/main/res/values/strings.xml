@@ -1,4 +1,20 @@
 <resources>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="detail">Детальная информация</string>
+    <string name="relevant_vacancies">Должность по подходящим вакансиям</string>
+    <string name="relevant">По соответствию</string>
+
+    <plurals name="more_vacancies">
+        <item quantity="one">Ещё %d вакансия</item>
+        <item quantity="few">Ещё %d вакансии</item>
+        <item quantity="many">Ещё %d вакансий</item>
+        <item quantity="other">Ещё %d вакансий</item>
+    </plurals>
+
+    <plurals name="total_vacancies">
+        <item quantity="one">%d вакансия</item>
+        <item quantity="few">%d вакансии</item>
+        <item quantity="many">%d вакансий</item>
+        <item quantity="other">%d вакансий</item>
+    </plurals>
 </resources>

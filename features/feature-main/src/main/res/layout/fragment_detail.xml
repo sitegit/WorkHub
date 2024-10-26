@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FeedBackFragment">
+    tools:context=".presenation.detail.DetailFragment">
 
     <TextView
         android:layout_width="wrap_content"
@@ -11,6 +11,5 @@
         android:layout_gravity="center"
         android:fontFamily="@font/sf_pro_display_semibold"
         android:textSize="34sp"
-        android:text="@string/label_feedback" />
-
+        android:text="@string/detail" />
 </FrameLayout>

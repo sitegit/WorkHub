@@ -6,14 +6,25 @@
 
     <fragment
         android:id="@+id/navigation_main"
-        android:name="com.example.feature_main.presenation.MainFragment"
+        android:name="com.example.feature_main.presenation.main.MainFragment"
         android:label="MainFragment" >
         <action
             android:id="@+id/action_navigation_main_to_relevantVacanciesFragment"
             app:destination="@id/relevantVacanciesFragment" />
+        <action
+            android:id="@+id/action_navigation_main_to_detailFragment"
+            app:destination="@id/detailFragment" />
     </fragment>
     <fragment
         android:id="@+id/relevantVacanciesFragment"
-        android:name="com.example.feature_main.presenation.RelevantVacanciesFragment"
-        android:label="RelevantVacanciesFragment" />
+        android:name="com.example.feature_main.presenation.relevant.RelevantVacanciesFragment"
+        android:label="RelevantVacanciesFragment" >
+        <action
+            android:id="@+id/action_relevantVacanciesFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.feature_main.presenation.detail.DetailFragment"
+        android:label="DetailFragment" />
 </navigation>

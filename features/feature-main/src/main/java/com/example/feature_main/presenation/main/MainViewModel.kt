@@ -1,8 +1,9 @@
-package com.example.feature_main.presenation
+package com.example.feature_main.presenation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.feature_main.domain.ApiResponse
+import com.example.feature_main.domain.entity.Vacancy
 import com.example.feature_main.domain.usecase.GetVacanciesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,6 +19,10 @@ class MainViewModel @Inject constructor(
 
     init {
         getVacancies()
+    }
+
+    fun onFavoriteClick(vacancy: Vacancy) {
+
     }
 
     private fun getVacancies() {

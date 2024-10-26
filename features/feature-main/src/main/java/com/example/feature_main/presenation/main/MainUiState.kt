@@ -1,4 +1,4 @@
-package com.example.feature_main.presenation
+package com.example.feature_main.presenation.main
 
 import com.example.feature_main.domain.entity.Response
 
