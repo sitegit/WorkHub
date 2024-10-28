@@ -10,4 +10,9 @@
     <include app:graph="@navigation/feedback_nav_graph" />
     <include app:graph="@navigation/messages_nav_graph" />
     <include app:graph="@navigation/profile_nav_graph" />
+
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.feature_main.presenation.detail.DetailFragment"
+        android:label="DetailFragment" />
 </navigation>

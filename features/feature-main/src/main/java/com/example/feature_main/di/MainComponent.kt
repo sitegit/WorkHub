@@ -5,9 +5,9 @@ import com.example.feature_main.presenation.relevant.RelevantVacanciesFragment
 import dagger.Component
 
 @Component(
-    dependencies = [MainFeatureComponentDependencies::class]
+    dependencies = [MainComponentDependencies::class]
 )
-interface MainFeatureComponent {
+interface MainComponent {
 
     fun inject(mainFragment: MainFragment)
 

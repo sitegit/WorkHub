@@ -8,5 +8,7 @@ interface NavigationUi {
 
     fun navigateFromMainToDetailFragment()
 
+    fun navigateFromFavouriteToDetailFragment()
+
     fun popUp()
 }

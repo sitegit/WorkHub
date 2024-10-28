@@ -2,10 +2,18 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/favourite_nav_graph"
-    app:startDestination="@id/navigation_favourite">
+    app:startDestination="@id/favouriteFragment">
 
     <fragment
-        android:id="@+id/navigation_favourite"
-        android:name="com.example.feature_favourite.FavouriteFragment"
-        android:label="FavouriteFragment" />
+        android:id="@+id/favouriteFragment"
+        android:name="com.example.feature_favourite.presentation.FavouriteFragment"
+        android:label="FavouriteFragment" >
+        <action
+            android:id="@+id/action_favouriteFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.feature_main.presenation.detail.DetailFragment"
+        android:label="DetailFragment" />
 </navigation>

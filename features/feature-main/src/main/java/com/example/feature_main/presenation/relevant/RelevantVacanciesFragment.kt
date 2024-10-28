@@ -11,18 +11,17 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.ConcatAdapter
+import com.example.core_ui.R
 import com.example.core_ui.navigation.NavigationUi
 import com.example.core_ui.utils.SpacingItemDecorator
 import com.example.core_ui.utils.ViewModelFactory
 import com.example.core_ui.utils.applySystemBarInsets
 import com.example.feature_main.databinding.FragmentRelevantVacanciesBinding
-import com.example.feature_main.di.DaggerMainFeatureComponent
-import com.example.feature_main.di.MainFeatureComponentDependenciesProvider
-import com.example.feature_main.presenation.adapter.HeaderVacanciesAdapter
+import com.example.feature_main.di.DaggerMainComponent
+import com.example.feature_main.di.MainComponentDependenciesProvider
+import com.example.feature_main.presenation.MainViewModel
 import com.example.feature_main.presenation.adapter.VacanciesAdapter
 import com.example.feature_main.presenation.main.MainUiState
-import com.example.feature_main.presenation.main.MainViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -44,20 +43,18 @@ class RelevantVacanciesFragment : Fragment() {
 
     private val vacanciesAdapter by lazy {
         VacanciesAdapter(
-            onFavoriteClick = { viewModel.onFavoriteClick(it) },
+            onFavoriteClick = { viewModel.toggleFavorite(it) },
             onRespondClick = { navigationUi?.navigateFromRelevantToDetailFragment() }
         )
     }
 
-    private val headerAdapter by lazy { HeaderVacanciesAdapter() }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val componentDependencies =
-            (requireActivity().application as MainFeatureComponentDependenciesProvider)
+            (requireActivity().application as MainComponentDependenciesProvider)
                 .getMainFeatureComponentDependencies()
-        val component = DaggerMainFeatureComponent.builder()
-            .mainFeatureComponentDependencies(componentDependencies)
+        val component = DaggerMainComponent.builder()
+            .mainComponentDependencies(componentDependencies)
             .build()
 
         component.inject(this)
@@ -76,9 +73,8 @@ class RelevantVacanciesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         view.applySystemBarInsets()
 
-        val concatAdapter = ConcatAdapter(headerAdapter, vacanciesAdapter)
-        binding.recyclerViewVacancies.adapter = concatAdapter
-        binding.recyclerViewVacancies.addItemDecoration(SpacingItemDecorator(context = requireContext(), spacingVertical = 8))
+        viewModel.updateVacancies()
+        initRecyclerView()
         binding.buttonBack.setOnClickListener { navigationUi?.popUp() }
         observeContent()
     }
@@ -100,10 +96,18 @@ class RelevantVacanciesFragment : Fragment() {
             MainUiState.Loading -> {}
             is MainUiState.Success -> {
                 val vacancies = state.data.vacancies
-                headerAdapter.setVacancyCount(vacancies.size)
+                val vacancyCount = vacancies.size
+                binding.vacanciesCountTv.text = binding.root.context.resources.getQuantityString(
+                    R.plurals.total_vacancies, vacancyCount, vacancyCount
+                )
                 vacanciesAdapter.submitList(vacancies)
             }
         }
+    }
+
+    private fun initRecyclerView() {
+        binding.recyclerViewVacancies.adapter = vacanciesAdapter
+        binding.recyclerViewVacancies.addItemDecoration(SpacingItemDecorator(context = requireContext(), spacingVertical = 8))
     }
 
     override fun onDestroyView() {

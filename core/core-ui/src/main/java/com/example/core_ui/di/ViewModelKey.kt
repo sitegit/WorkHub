@@ -1,4 +1,4 @@
-package com.example.workhub.di
+package com.example.core_ui.di
 
 import androidx.lifecycle.ViewModel
 import dagger.MapKey

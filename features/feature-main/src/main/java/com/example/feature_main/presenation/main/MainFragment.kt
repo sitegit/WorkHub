@@ -17,8 +17,9 @@ import com.example.core_ui.utils.ViewModelFactory
 import com.example.core_ui.utils.applySystemBarInsets
 import com.example.feature_main.R.plurals
 import com.example.feature_main.databinding.FragmentMainBinding
-import com.example.feature_main.di.DaggerMainFeatureComponent
-import com.example.feature_main.di.MainFeatureComponentDependenciesProvider
+import com.example.feature_main.di.DaggerMainComponent
+import com.example.feature_main.di.MainComponentDependenciesProvider
+import com.example.feature_main.presenation.MainViewModel
 import com.example.feature_main.presenation.adapter.OffersAdapter
 import com.example.feature_main.presenation.adapter.VacanciesAdapter
 import kotlinx.coroutines.launch
@@ -43,7 +44,7 @@ class MainFragment : Fragment() {
 
     private val vacanciesAdapter by lazy {
         VacanciesAdapter(
-            onFavoriteClick = { viewModel.onFavoriteClick(it) },
+            onFavoriteClick = { viewModel.toggleFavorite(it) },
             onRespondClick = { navigationUi?.navigateFromMainToDetailFragment() }
         )
     }
@@ -51,10 +52,10 @@ class MainFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val componentDependencies =
-            (requireActivity().application as MainFeatureComponentDependenciesProvider)
+            (requireActivity().application as MainComponentDependenciesProvider)
             .getMainFeatureComponentDependencies()
-        val component = DaggerMainFeatureComponent.builder()
-            .mainFeatureComponentDependencies(componentDependencies)
+        val component = DaggerMainComponent.builder()
+            .mainComponentDependencies(componentDependencies)
             .build()
 
         component.inject(this)
@@ -93,6 +94,11 @@ class MainFragment : Fragment() {
             MainUiState.Loading -> {}
             is MainUiState.Success -> setupAdapters(state)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.updateVacancies()
     }
 
     private fun initRecyclerView() {

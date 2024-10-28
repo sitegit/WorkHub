@@ -12,8 +12,7 @@ fun View.applySystemBarInsets() {
         v.updatePadding(
             left = insets.left,
             top = insets.top,
-            right = insets.right,
-            bottom = insets.bottom
+            right = insets.right
         )
         WindowInsetsCompat.CONSUMED
     }

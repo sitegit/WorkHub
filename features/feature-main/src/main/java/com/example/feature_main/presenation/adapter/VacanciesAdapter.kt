@@ -83,4 +83,8 @@ class VacancyDiffCallback : DiffUtil.ItemCallback<Vacancy>() {
     override fun areContentsTheSame(oldItem: Vacancy, newItem: Vacancy): Boolean {
         return oldItem == newItem
     }
+
+    override fun getChangePayload(oldItem: Vacancy, newItem: Vacancy): Any? {
+        return if (oldItem.isFavorite != newItem.isFavorite) true else null
+    }
 }

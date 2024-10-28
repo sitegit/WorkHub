@@ -1,29 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/search_nav_graph"
         android:icon="@drawable/icon_search"
-        android:title="@string/label_search" />
+        android:title="@string/label_search"
+        app:showAsAction="ifRoom"
+        android:menuCategory="secondary"/>
 
     <item
         android:id="@+id/favourite_nav_graph"
         android:icon="@drawable/icon_favourite"
-        android:title="@string/label_favourite" />
+        android:title="@string/label_favourite"
+        app:showAsAction="ifRoom"
+        android:menuCategory="secondary"/>
 
     <item
         android:id="@+id/feedback_nav_graph"
         android:icon="@drawable/icon_feedback"
-        android:title="@string/label_feedback" />
+        android:title="@string/label_feedback"
+        app:showAsAction="ifRoom"
+        android:menuCategory="secondary"/>
 
     <item
         android:id="@+id/messages_nav_graph"
         android:icon="@drawable/icon_message"
-        android:title="@string/label_messages" />
+        android:title="@string/label_messages"
+        app:showAsAction="ifRoom"
+        android:menuCategory="secondary"/>
 
     <item
         android:id="@+id/profile_nav_graph"
         android:icon="@drawable/icon_profile"
-        android:title="@string/label_profile" />
+        android:title="@string/label_profile"
+        app:showAsAction="ifRoom"
+        android:menuCategory="secondary"/>
 
 </menu>

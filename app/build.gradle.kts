@@ -42,6 +42,7 @@ android {
 dependencies {
     implementation(project(":core:core-ui"))
     implementation(project(":core:core-network"))
+    implementation(project(":core:core-db"))
     implementation(project(":features:feature-main"))
     implementation(project(":features:feature-favourite"))
     implementation(project(":features:feature-feedback"))
@@ -51,6 +52,9 @@ dependencies {
     implementation(libs.retrofit.core)
     implementation(libs.dagger.core)
     ksp(libs.dagger.compiler)
+    implementation(libs.room.core)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

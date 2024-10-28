@@ -21,4 +21,11 @@
         <item quantity="many">Сейчас просматривает %d человек</item>
         <item quantity="other">Сейчас просматривает %d человек</item>
     </plurals>
+
+    <plurals name="total_vacancies">
+        <item quantity="one">%d вакансия</item>
+        <item quantity="few">%d вакансии</item>
+        <item quantity="many">%d вакансий</item>
+        <item quantity="other">%d вакансий</item>
+    </plurals>
 </resources>
