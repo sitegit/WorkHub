@@ -5,7 +5,7 @@
     app:startDestination="@id/mainFragment">
     <fragment
         android:id="@+id/relevantVacanciesFragment"
-        android:name="com.example.feature_main.presenation.relevant.RelevantVacanciesFragment"
+        android:name="com.example.feature_main.presenation.screen.RelevantVacanciesFragment"
         android:label="RelevantVacanciesFragment" >
         <action
             android:id="@+id/action_relevantVacanciesFragment_to_detailFragment"
@@ -13,11 +13,11 @@
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.example.feature_main.presenation.detail.DetailFragment"
+        android:name="com.example.feature_main.presenation.screen.DetailFragment"
         android:label="DetailFragment" />
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.feature_main.presenation.main.MainFragment"
+        android:name="com.example.feature_main.presenation.screen.MainFragment"
         android:label="MainFragment" >
         <action
             android:id="@+id/action_mainFragment_to_detailFragment"

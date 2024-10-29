@@ -8,6 +8,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.core_db.FavouriteVacanciesDao
@@ -40,7 +41,7 @@ class MainActivity : AppCompatActivity(), NavigationUi {
 
         enableEdgeToEdge()
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
-        setupNavController()
+        setupNavigation()
         createBadge()
         observeBadge()
     }
@@ -76,8 +77,27 @@ class MainActivity : AppCompatActivity(), NavigationUi {
         }
     }
 
-    private fun setupNavController() {
+    private fun setupNavigation() {
         binding.navView.setupWithNavController(navController)
+        binding.navView.setOnItemReselectedListener { }
+
+        binding.navView.setOnItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.search_nav_graph -> {
+                    navController.navigate(
+                        R.id.search_nav_graph,
+                        null,
+                        NavOptions.Builder()
+                            .setPopUpTo(navController.graph.startDestinationId, true)
+                            .build()
+                    )
+                }
+                else -> {
+                    navController.navigate(menuItem.itemId)
+                }
+            }
+            true
+        }
     }
 
     override fun navigateToRelevantVacanciesFragment() {

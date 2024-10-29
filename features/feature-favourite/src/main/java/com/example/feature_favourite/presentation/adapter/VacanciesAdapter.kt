@@ -1,75 +1,45 @@
 package com.example.feature_favourite.presentation.adapter
 
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
-import com.example.core_ui.R.plurals
-import com.example.core_ui.R.string
-import com.example.feature_favourite.databinding.VacancyItemBinding
+import com.example.core_ui.R
+import com.example.core_ui.databinding.VacancyItemBinding
+import com.example.core_ui.utils.BaseVacanciesAdapter
 import com.example.feature_favourite.domain.Vacancy
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 class VacanciesAdapter(
     private val onFavoriteClick: (Vacancy) -> Unit,
     private val onRespondClick: () -> Unit
-) : ListAdapter<Vacancy, VacanciesAdapter.VacancyViewHolder>(VacancyDiffCallback()) {
+) : BaseVacanciesAdapter<Vacancy>(VacancyDiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VacancyViewHolder {
-        return VacancyViewHolder(
-            VacancyItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        )
-    }
-
-    override fun onBindViewHolder(holder: VacancyViewHolder, position: Int) {
-        getItem(position)?.let { holder.bind(it) }
-    }
-
-
-    inner class VacancyViewHolder(
-        private val binding: VacancyItemBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(vacancy: Vacancy) {
-            binding.apply {
-                vacancy.lookingNumber?.let { number ->
-                    candidatesTv.apply {
-                        visibility = View.VISIBLE
-                        text = root.context.resources.getQuantityString(
-                            plurals.people_count, number, number
-                        )
-                    }
-                } ?: run { candidatesTv.visibility = View.GONE }
-
-                likeIcon.apply {
-                    setImageResource(
-                        if (vacancy.isFavorite) com.example.core_ui.R.drawable.icon_favourite_active
-                        else com.example.core_ui.R.drawable.icon_favourite
+    override fun bindData(
+        binding: VacancyItemBinding,
+        item: Vacancy
+    ) {
+        binding.apply {
+            item.lookingNumber?.let { number ->
+                candidatesTv.apply {
+                    visibility = View.VISIBLE
+                    text = root.context.resources.getQuantityString(
+                        R.plurals.people_count, number, number
                     )
-                    setOnClickListener { onFavoriteClick(vacancy) }
                 }
+            } ?: run { candidatesTv.visibility = View.GONE }
 
-                positionTv.text = vacancy.title
-                cityTv.text = vacancy.address
-                companyTv.text = vacancy.company
-                workExperienceTv.text = vacancy.experience
-                dateOfPublicationTv.text = formatPublishDate(vacancy.publishedDate)
-
-                vacancyItem.setOnClickListener { onRespondClick() }
+            likeIcon.apply {
+                setImageResource(
+                    if (item.isFavorite) R.drawable.icon_favourite_active
+                    else R.drawable.icon_favourite
+                )
+                setOnClickListener { onFavoriteClick(item) }
             }
-        }
 
-        private fun formatPublishDate(dateString: String): String {
-            val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                .parse(dateString) ?: return dateString
-
-            val day = SimpleDateFormat("d", Locale.getDefault()).format(date)
-            val month = SimpleDateFormat("MMMM", Locale("ru")).format(date)
-
-            return binding.root.context.getString(string.published, day, month)
+            positionTv.text = item.title
+            cityTv.text = item.address
+            companyTv.text = item.company
+            workExperienceTv.text = item.experience
+            dateOfPublicationTv.text = formatPublishDate(binding.root.context, item.publishedDate)
+            vacancyItem.setOnClickListener { onRespondClick() }
         }
     }
 }

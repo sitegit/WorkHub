@@ -9,7 +9,7 @@ class ObserveVacanciesUseCase @Inject constructor(
     private val mainRepository: MainRepository
 ) {
 
-    suspend operator fun invoke(): StateFlow<Response> {
+    operator fun invoke(): StateFlow<Response> {
         return mainRepository.vacanciesFlow
     }
 }

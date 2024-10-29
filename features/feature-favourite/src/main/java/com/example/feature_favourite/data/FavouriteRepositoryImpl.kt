@@ -14,10 +14,6 @@ class FavouriteRepositoryImpl @Inject constructor(
     override val favouriteVacancies: Flow<List<Vacancy>>
         get() = vacanciesDao.getFavouriteVacancies().map { it.toEntities() }
 
-    override fun observeIsFavourite(vacancyId: String): Flow<Boolean> {
-        return vacanciesDao.observeIsFavourite(vacancyId)
-    }
-
     override suspend fun removeFromFavourite(vacancyId: String) {
         vacanciesDao.removeFromFavourite(vacancyId)
     }

@@ -13,7 +13,9 @@ interface MainRepository {
 
     fun observeIsFavourite(id: String): Flow<Boolean>
 
-    suspend fun toggleFavoriteVacancy(vacancy: Vacancy)
+    suspend fun addVacancyToFavourite(vacancy: Vacancy)
+
+    suspend fun removeVacancyFromFavourite(id: String)
 
     suspend fun updateVacancies()
 }

@@ -19,44 +19,51 @@ class MainRepositoryImpl @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) : MainRepository{
 
-    private val _vacanciesFlow = MutableStateFlow(Response(emptyList(), emptyList()))
+    private val _vacanciesFlow = MutableStateFlow(
+        Response(emptyList(), emptyList())
+    )
     override val vacanciesFlow = _vacanciesFlow.asStateFlow()
 
     override suspend fun getMainFeatureData() {
-        val isFirstLaunch = sharedPreferences.getBoolean(IS_FIRST_LAUNCH, true)
-        var response = apiService.getMockData().toEntity()
+        val response = apiService.getMockData().toEntity()
 
-        if (isFirstLaunch) {
-            addFavouriteVacanciesToDb(response.vacancies)
-            sharedPreferences.edit().putBoolean(IS_FIRST_LAUNCH, false).apply()
-        }
-
-        response = response.copy(vacancies = response.vacancies.map { vacancy ->
-            val isFavourite = observeIsFavourite(vacancy.id).first()
-            vacancy.copy(isFavorite = isFavourite)
-        })
-
-        _vacanciesFlow.emit(response)
+        checkLaunchApp(response)
+        _vacanciesFlow.emit(getMappedResponse(response))
     }
 
     override fun observeIsFavourite(id: String): Flow<Boolean> {
         return vacanciesDao.observeIsFavourite(id)
     }
 
-    override suspend fun toggleFavoriteVacancy(vacancy: Vacancy) {
-        val isFavorite = observeIsFavourite(vacancy.id).first()
+    override suspend fun addVacancyToFavourite(vacancy: Vacancy) {
+        vacanciesDao.addToFavouriteVacancy(vacancy.toVacancyDb())
+    }
 
-        if (!isFavorite) {
-            vacanciesDao.addToFavouriteVacancy(vacancy.copy(isFavorite = true).toVacancyDb())
-        } else {
-            vacanciesDao.removeFromFavourite(vacancy.id)
-        }
-
-        updateVacancies()
+    override suspend fun removeVacancyFromFavourite(id: String) {
+        vacanciesDao.removeFromFavourite(id)
     }
 
     override suspend fun updateVacancies() {
         _vacanciesFlow.emit(getUpdatedVacancies())
+    }
+
+    private suspend fun getMappedResponse(response: Response): Response {
+        return response.copy(vacancies = response.vacancies.map { vacancy ->
+            val isFavourite = observeIsFavourite(vacancy.id).first()
+            vacancy.copy(isFavorite = isFavourite)
+        })
+    }
+
+    private suspend fun checkLaunchApp(response: Response) {
+        val isFirstLaunch = sharedPreferences.getBoolean(IS_FIRST_LAUNCH, true)
+
+        if (isFirstLaunch) {
+            response.vacancies
+                .filter { it.isFavorite }
+                .forEach { addVacancyToFavourite(it) }
+
+            sharedPreferences.edit().putBoolean(IS_FIRST_LAUNCH, false).apply()
+        }
     }
 
     private suspend fun getUpdatedVacancies(): Response {
@@ -65,12 +72,6 @@ class MainRepositoryImpl @Inject constructor(
                 vacancy.copy(isFavorite = observeIsFavourite(vacancy.id).first())
             })
         }
-    }
-
-    private suspend fun addFavouriteVacanciesToDb(vacancies: List<Vacancy>) {
-        vacancies
-            .filter { it.isFavorite }
-            .forEach { vacanciesDao.addToFavouriteVacancy(it.toVacancyDb()) }
     }
 
     companion object {

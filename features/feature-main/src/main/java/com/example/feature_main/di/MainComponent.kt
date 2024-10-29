@@ -1,7 +1,7 @@
 package com.example.feature_main.di
 
-import com.example.feature_main.presenation.main.MainFragment
-import com.example.feature_main.presenation.relevant.RelevantVacanciesFragment
+import com.example.feature_main.presenation.screen.MainFragment
+import com.example.feature_main.presenation.screen.RelevantVacanciesFragment
 import dagger.Component
 
 @Component(

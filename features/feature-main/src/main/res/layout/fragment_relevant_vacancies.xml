@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presenation.relevant.RelevantVacanciesFragment">
+    tools:context=".presenation.screen.RelevantVacanciesFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -106,6 +106,13 @@
                     android:layout_marginTop="1dp"
                     android:src="@drawable/icon_filter" />
             </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/progress_circular"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:indeterminateTint="@color/white" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewVacancies"

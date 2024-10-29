@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -18,6 +19,7 @@ import com.example.core_ui.utils.applySystemBarInsets
 import com.example.feature_favourite.databinding.FragmentFavouriteBinding
 import com.example.feature_favourite.di.DaggerFavouriteComponent
 import com.example.feature_favourite.di.FavouriteComponentDependenciesProvider
+import com.example.feature_favourite.domain.Vacancy
 import com.example.feature_favourite.presentation.adapter.VacanciesAdapter
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -77,23 +79,34 @@ class FavouriteFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 launch {
                     viewModel.state.collect { state ->
-                        when (state) {
-                            is FavouriteUiState.Error -> {}
-                            FavouriteUiState.Initial -> {}
-                            FavouriteUiState.Loading -> {}
-                            is FavouriteUiState.Success -> {
-                                val data = state.data
-                                val dataSize = data.size
-                                binding.vacanciesCount.text = requireContext().resources.getQuantityString(
-                                    plurals.total_vacancies, dataSize, dataSize
-                                )
-                                vacanciesAdapter.submitList(data)
-                            }
-                        }
+                        setContent(state)
                     }
                 }
             }
         }
+    }
+
+    private fun setContent(state: FavouriteUiState) {
+        when (state) {
+            is FavouriteUiState.Error -> {
+                Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
+                binding.progressCircular.visibility = View.GONE
+            }
+            FavouriteUiState.Initial -> {}
+            FavouriteUiState.Loading -> binding.progressCircular.visibility = View.VISIBLE
+            is FavouriteUiState.Success -> {
+                setData(state.data)
+                binding.progressCircular.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun setData(data: List<Vacancy>) {
+        val dataSize = data.size
+        binding.vacanciesCount.text = requireContext().resources.getQuantityString(
+            plurals.total_vacancies, dataSize, dataSize
+        )
+        vacanciesAdapter.submitList(data)
     }
 
     private fun initRecyclerView() {

@@ -1,8 +1,8 @@
 package com.example.feature_favourite.presentation
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.feature_favourite.domain.DbResponse
 import com.example.feature_favourite.domain.GetVacanciesUseCase
 import com.example.feature_favourite.domain.RemoveFavoriteVacancyUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,8 +22,10 @@ class FavouriteViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = FavouriteUiState.Loading
             getVacanciesUseCase().collect { vacancies ->
-                Log.i("MyTag", vacancies.map { it.isFavorite }.toString())
-                _state.value = FavouriteUiState.Success(vacancies)
+                when (vacancies) {
+                    is DbResponse.Error -> _state.value = FavouriteUiState.Error(vacancies.message)
+                    is DbResponse.Success -> _state.value = FavouriteUiState.Success(vacancies.data)
+                }
             }
         }
     }

@@ -32,7 +32,7 @@ class OffersAdapter : ListAdapter<Offer, OffersAdapter.OffersViewHolder>(Concept
 
         init {
             binding.root.setOnClickListener {
-                val item = getItem(adapterPosition)
+                val item = getItem(bindingAdapterPosition)
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.link))
 
                 binding.root.context.startActivity(intent)
