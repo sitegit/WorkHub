@@ -1,16 +1,17 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
 }
 
 android {
     namespace = "com.example.workhub"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.workhub"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -39,12 +40,26 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:core-ui"))
+    implementation(project(":core:core-network"))
+    implementation(project(":core:core-db"))
+    implementation(project(":features:feature-main"))
+    implementation(project(":features:feature-favourite"))
+    implementation(project(":features:feature-feedback"))
+    implementation(project(":features:feature-messages"))
+    implementation(project(":features:feature-profile"))
+
+    implementation(libs.retrofit.core)
+    implementation(libs.dagger.core)
+    ksp(libs.dagger.compiler)
+    implementation(libs.room.core)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)

@@ -1,0 +1,12 @@
+<resources>
+    <string name="detail">Детальная информация</string>
+    <string name="relevant_vacancies">Должность по подходящим вакансиям</string>
+    <string name="relevant">По соответствию</string>
+
+    <plurals name="more_vacancies">
+        <item quantity="one">Ещё %d вакансия</item>
+        <item quantity="few">Ещё %d вакансии</item>
+        <item quantity="many">Ещё %d вакансий</item>
+        <item quantity="other">Ещё %d вакансий</item>
+    </plurals>
+</resources>

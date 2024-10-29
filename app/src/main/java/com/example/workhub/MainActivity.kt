@@ -1,35 +1,122 @@
 package com.example.workhub
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.example.core_db.FavouriteVacanciesDao
+import com.example.core_ui.R.color
+import com.example.core_ui.navigation.NavigationUi
+import com.example.core_ui.utils.toPx
 import com.example.workhub.databinding.ActivityMainBinding
+import com.example.workhub.di.DaggerApplicationComponent
+import com.google.android.material.badge.BadgeDrawable
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NavigationUi {
 
-    private lateinit var binding: ActivityMainBinding
+    private val binding by lazy {
+        ActivityMainBinding.inflate(layoutInflater)
+    }
+
+    @Inject
+    lateinit var vacanciesDao: FavouriteVacanciesDao
+
+    private val navController by lazy {
+        (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        DaggerApplicationComponent.factory().create(this).inject(this)
         setContentView(binding.root)
 
-        val navView: BottomNavigationView = binding.navView
+        enableEdgeToEdge()
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
+        setupNavigation()
+        createBadge()
+        observeBadge()
+    }
 
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
-            )
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+    private fun observeBadge() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                launch {
+                    vacanciesDao.getFavouriteVacanciesCount().collect { count ->
+                        updateBadge(count)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateBadge(count: Int) {
+        binding.navView.getOrCreateBadge(R.id.favourite_nav_graph).apply {
+            number = count
+            isVisible = count > 0
+        }
+    }
+
+    private fun createBadge() {
+        binding.navView.getOrCreateBadge(R.id.favourite_nav_graph).apply {
+            backgroundColor = ContextCompat.getColor(this@MainActivity, color.red)
+            badgeTextColor = ContextCompat.getColor(this@MainActivity, color.white)
+            badgeGravity = BadgeDrawable.TOP_END
+            horizontalOffset = 4.toPx(this@MainActivity)
+            verticalOffset = 5.toPx( this@MainActivity)
+            maxCharacterCount = 3
+            isVisible = false
+        }
+    }
+
+    private fun setupNavigation() {
+        binding.navView.setupWithNavController(navController)
+        binding.navView.setOnItemReselectedListener { }
+
+        binding.navView.setOnItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.search_nav_graph -> {
+                    navController.navigate(
+                        R.id.search_nav_graph,
+                        null,
+                        NavOptions.Builder()
+                            .setPopUpTo(navController.graph.startDestinationId, true)
+                            .build()
+                    )
+                }
+                else -> {
+                    navController.navigate(menuItem.itemId)
+                }
+            }
+            true
+        }
+    }
+
+    override fun navigateToRelevantVacanciesFragment() {
+        navController.navigate(R.id.action_mainFragment_to_relevantVacanciesFragment)
+    }
+
+    override fun navigateFromRelevantToDetailFragment() {
+        navController.navigate(R.id.action_relevantVacanciesFragment_to_detailFragment)
+    }
+
+    override fun navigateFromFavouriteToDetailFragment() {
+        navController.navigate(R.id.action_favouriteFragment_to_detailFragment)
+    }
+
+    override fun navigateFromMainToDetailFragment() {
+        navController.navigate(R.id.action_mainFragment_to_detailFragment)
+    }
+
+    override fun popUp() {
+        navController.popBackStack()
     }
 }
